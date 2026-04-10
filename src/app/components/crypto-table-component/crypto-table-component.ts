@@ -1,28 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { CryptoApiService } from '../../services/crypto-api-service';
+import { Crypto } from '../../models/crypto.model';
+import { Observable } from 'rxjs';
+import { HeaderComponent } from '../header-component/header-component';
 
 @Component({
   selector: 'app-crypto-table-component',
-  imports: [CommonModule],
   standalone: true,
+  imports: [CommonModule, HeaderComponent],
   templateUrl: './crypto-table-component.html',
   styleUrl: './crypto-table-component.scss',
 })
 export class CryptoTableComponent implements OnInit {
-  listaCryptos: any[] = [];
+  listaCryptos$!: Observable<Crypto[]>;
 
-  constructor(private http: HttpClient) {}
+  constructor(private cryptoApiService: CryptoApiService) {}
 
   ngOnInit() {
-    this.consultarLista();
-  }
-
-  consultarLista() {
-    this.http.get<any[]>('/cryptos.json').subscribe((data) => {
-      this.listaCryptos = data;
-      console.log(data);
-      console.log('this' + this.listaCryptos.length);
+    this.listaCryptos$ = this.cryptoApiService.getCryptoList();
+    this.listaCryptos$.subscribe((datos) => {
+      console.log('Lo que llega del servivio de la API:', datos);
     });
   }
 }

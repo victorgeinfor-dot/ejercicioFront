@@ -1,0 +1,59 @@
+<div class="row mt-3">
+  <div class="col">
+    <app-header-component [listaCryptos]="(listaCryptos$ | async) || []"></app-header-component>
+  </div>
+</div>
+
+<div class="row mt-5">
+  <div class="col">
+    <table
+      class="table table-hover table-sm table-responsive border-top mx-auto"
+      style="width: 80%"
+    >
+      <thead class="table" style="border-bottom: 2px solid #a9a9a9">
+        <tr>
+          <th style="width: 6%">Rank</th>
+          <th style="width: 6%"></th>
+          <th style="width: 36%">Name</th>
+          <th style="width: 14%">Price</th>
+          <th style="width: 24%">Marketcap</th>
+          <th style="width: 14%">24H (%)</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (crypto of listaCryptos$ | async; track crypto.id) {
+          <tr class="align-middle">
+            <th scope="row">{{ crypto.market_cap_rank }}</th>
+            <td>
+              <img src="{{ crypto.image }}" height="35" />
+            </td>
+            <td style="text-transform: capitalize">
+              <strong>{{ crypto.name }}</strong>
+            </td>
+            <td>{{ crypto.current_price | currency: 'USD' : 'symbol' : '1.0-2' }}</td>
+            <td>{{ crypto.market_cap | currency: 'USD' : 'symbol' : '1.0-0' }}</td>
+            <td
+              [ngClass]="
+                crypto.market_cap_change_percentage_24h > 0 ? 'text-success' : 'text-danger'
+              "
+            >
+              <div class="d-flex justify-content-start align-items-start gap-1">
+                {{ crypto.market_cap_change_percentage_24h | number: '1.2-2' }}
+                <span>
+                  @if (crypto.price_change_percentage_24h > 0) {
+                    &#9650;
+                  }
+                </span>
+                <span>
+                  @if (crypto.price_change_percentage_24h < 0) {
+                    &#9660;
+                  }
+                </span>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
