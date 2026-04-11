@@ -23,6 +23,6 @@ export class Crypto {
   atl!: number;
   atl_change_percentage!: number;
   atl_date!: string;
-  roi!: any; // Puede ser null u objeto, revisa si necesitas tiparlo mejor
+  roi!: any;
   last_updated!: string;
 }

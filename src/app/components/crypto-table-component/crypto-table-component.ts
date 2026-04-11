@@ -19,8 +19,8 @@ export class CryptoTableComponent implements OnInit {
 
   ngOnInit() {
     this.listaCryptos$ = this.cryptoApiService.getCryptoList();
-    this.listaCryptos$.subscribe((datos) => {
-      console.log('Lo que llega del servivio de la API:', datos);
-    });
+    // this.listaCryptos$.subscribe((datos) => {
+    //   console.log('Lo que llega del servicio:', datos);
+    // });
   }
 }

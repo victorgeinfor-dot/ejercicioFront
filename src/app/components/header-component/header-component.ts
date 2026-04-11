@@ -1,8 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { CryptoApiService } from '../../services/crypto-api-service';
 import { Crypto } from '../../models/crypto.model';
 
 @Component({
@@ -13,14 +11,10 @@ import { Crypto } from '../../models/crypto.model';
 })
 export class HeaderComponent {
   searchControl = new FormControl('');
-  //listaCryptos: Crypto[] = [];
   @Input() listaCryptos: Crypto[] = [];
   filteredCryptos: Crypto[] = [];
 
-  constructor(
-    private http: HttpClient,
-    private cryptoApiService: CryptoApiService,
-  ) {
+  constructor() {
     this.searchControl.valueChanges.subscribe((value) => {
       console.log('Usuario escribe', value);
       const cryptoSearch = value?.toLowerCase().trim() || '';

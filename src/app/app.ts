@@ -1,5 +1,4 @@
 import { Component, signal } from '@angular/core';
-import { HeaderComponent } from './components/header-component/header-component';
 import { CryptoTableComponent } from './components/crypto-table-component/crypto-table-component';
 
 @Component({
