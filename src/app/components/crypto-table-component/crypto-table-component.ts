@@ -8,20 +8,10 @@ import { HeaderComponent } from '../header-component/header-component';
 @Component({
   selector: 'app-crypto-table-component',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, CommonModule],
+  imports: [CommonModule],
   templateUrl: './crypto-table-component.html',
   styleUrl: './crypto-table-component.scss',
 })
-export class CryptoTableComponent implements OnInit {
+export class CryptoTableComponent {
   @Input() listaCryptos: Crypto[] = [];
-  //listaCryptos$!: Observable<Crypto[]>;
-
-  constructor(private cryptoApiService: CryptoApiService) {}
-
-  ngOnInit() {
-    // this.listaCryptos$ = this.cryptoApiService.getCryptoList();
-    // this.listaCryptos$.subscribe((datos) => {
-    //   console.log('Lo que llega del servicio:', datos);
-    // });
-  }
 }
