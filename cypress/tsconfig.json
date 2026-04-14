@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "outDir": "../out-tsc/cypress",
+    "types": ["cypress", "mocha"]
+  },
+  "include": ["**/*.ts", "**/*.js"]
+}
