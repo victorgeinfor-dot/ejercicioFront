@@ -8,7 +8,7 @@ import { Crypto } from '../models/crypto.model';
 })
 export class CryptoApiService {
   private cryptoUrl =
-    'https:///api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc'; // URL to web API
+    'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc'; // URL to web API
   private jsonRespaldo = '/cryptos.json';
 
   constructor(private http: HttpClient) {}

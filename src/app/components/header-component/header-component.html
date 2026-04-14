@@ -17,11 +17,7 @@
         />
         <button type="button" class="btn btn-secondary"><i class="bi bi-search"></i></button>
 
-        <div
-          *ngIf="searchControl.value && filteredCryptos.length > 0"
-          class="list-group position-absolute top-100 end-0 z-3"
-          style="width: 350px"
-        >
+        <div class="list-group position-absolute top-100 end-0 z-3" style="width: 350px">
           @if (searchControl.value && filteredCryptos.length > 0) {
             @for (crypto of filteredCryptos; track $index) {
               <button
