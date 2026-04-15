@@ -18,8 +18,8 @@
         <button type="button" class="btn btn-secondary"><i class="bi bi-search"></i></button>
 
         <div class="list-group position-absolute top-100 end-0 z-3" style="width: 350px">
-          @if (searchControl.value && filteredCryptos.length > 0) {
-            @for (crypto of filteredCryptos; track $index) {
+          @if (searchControl.value && filteredCryptos().length > 0) {
+            @for (crypto of filteredCryptos(); track $index) {
               <button
                 type="button"
                 class="list-group-item list-group-item-action d-flex justify-content-between"

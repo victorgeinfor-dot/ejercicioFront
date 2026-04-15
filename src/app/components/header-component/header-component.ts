@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Crypto } from '../../models/crypto.model';
@@ -11,18 +11,22 @@ import { Crypto } from '../../models/crypto.model';
 })
 export class HeaderComponent {
   searchControl = new FormControl('');
-  @Input() listaCryptos: Crypto[] = [];
-  filteredCryptos: Crypto[] = [];
+  //@Input() listaCryptos: Crypto[] = [];
+  listaCryptos = input<Crypto[]>([]);
+  //filteredCryptos: Crypto[] = [];
+  filteredCryptos = signal<Crypto[]>([]);
 
   constructor() {
     this.searchControl.valueChanges.subscribe((value) => {
       console.log('Usuario escribe', value);
       const cryptoSearch = value?.toLowerCase().trim() || '';
 
-      this.filteredCryptos = this.listaCryptos
-        .filter((crypto: Crypto) => crypto.name.toLocaleLowerCase().includes(cryptoSearch))
-        .slice(0, 5);
-      console.log('Crypto filtrada', this.filteredCryptos);
+      this.filteredCryptos.set(
+        this.listaCryptos()
+          .filter((crypto: Crypto) => crypto.name.toLocaleLowerCase().includes(cryptoSearch))
+          .slice(0, 5),
+      );
+      console.log('Crypto filtrada', this.filteredCryptos());
     });
   }
 }

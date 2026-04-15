@@ -1,8 +1,8 @@
 <div class="container">
-  @if (listaCryptos$ | async; as cryptos) {
-    <app-header-component [listaCryptos]="cryptos"></app-header-component>
+  @if (listaCryptos()) {
+    <app-header-component [listaCryptos]="listaCryptos()"></app-header-component>
 
-    <app-crypto-table-component [listaCryptos]="cryptos"></app-crypto-table-component>
+    <app-crypto-table-component [listaCryptos]="listaCryptos()"></app-crypto-table-component>
   } @else {
     <p>Cargando datos del mercado...</p>
   }

@@ -1,14 +1,14 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Crypto } from '../../models/crypto.model';
 
 @Component({
   selector: 'app-crypto-table-component',
-  standalone: true,
   imports: [CommonModule],
   templateUrl: './crypto-table-component.html',
   styleUrl: './crypto-table-component.scss',
 })
 export class CryptoTableComponent {
-  @Input() listaCryptos: Crypto[] = [];
+  //@Input() listaCryptos: Crypto[] = [];
+  listaCryptos = input<Crypto[]>([]);
 }

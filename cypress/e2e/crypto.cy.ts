@@ -1,39 +1,49 @@
 /// <reference types="cypress" />
 
 describe('Pruebas de Carga', () => {
+  before(() => {
+    cy.visit('http://localhost:4200');
+  });
+
   it('Comprobamos que al cargar la página se cargue al menos 1 elemento de la tabla.', () => {
-    cy.visit('http://localhost:4200'); // Visitamos aquí
     cy.get('table tbody tr').should('have.length.at.least', 1); //Al menos
   });
 
   it('Comprobamos que el primer elemento de la lista sea el que mayor capitalización de mercado tenga (para comprobar ordenación descendente)', () => {
-    // 1. Ponemos el radar antes de visitar
-    cy.intercept('GET', '**/coins/markets*').as('getCryptos');
-    cy.visit('http://localhost:4200');
+    cy.get('table tbody tr td:nth-child(5)').then(($celdas) => {
+      let primerValor = 0;
+      let segundoValor = 0;
+      for (let i = 0; i < $celdas.length - 1; i++) {
+        // Capturamos el valor de la fila actual y de la siguiente
+        const actual = parseFloat(
+          $celdas
+            .eq(i)
+            .text()
+            .replace(/[$,\s]/g, ''),
+        );
+        const siguiente = parseFloat(
+          $celdas
+            .eq(i + 1)
+            .text()
+            .replace(/[$,\s]/g, ''),
+        );
 
-    // 2. Esperamos el JSON
-    cy.wait('@getCryptos').then((interception) => {
-      //Verifica que interception.response no sea null ni undefined.
-      expect(interception.response).to.exist;
-      const listaCriptos = interception.response!.body;
+        // Log opcional para ver qué está comparando en la consola de Cypress
+        //cy.log(`Fila ${i + 1}: ${actual} >= Fila ${i + 2}: ${siguiente}`);
 
-      // 3. Recorremos el JSON (usamos un for normal para comparar i con i+1)
-      for (let i = 0; i < listaCriptos.length - 1; i++) {
-        const actual = listaCriptos[i];
-        const siguiente = listaCriptos[i + 1];
-        // Aserción lógica: El precio o market_cap actual debe ser >= al siguiente
-        expect(actual.market_cap).to.be.at.least(siguiente.market_cap);
+        // Comprobamos que el actual sea mayor o igual al siguiente
+        // Ponemos un mensaje de error personalizado para saber dónde falla
+        expect(actual, `La fila ${i + 1} debe ser mayor o igual a la ${i + 2}`).to.be.at.least(
+          siguiente,
+        );
       }
+
+      expect(primerValor).to.be.at.least(segundoValor);
     });
   });
 
   it('Comprobamos que el cambio de precio durante las 24 últimas horas aparezca verde si es positivo o rojo si es negativo (columna 24H %)', () => {
-    cy.visit('http://localhost:4200');
-
-    // 1. Esperamos a que las filas existan
-    cy.get('table tbody tr').should('have.length.at.least', 1);
-
-    // 2. Iteramos por cada fila
+    // Iteramos por cada fila
     cy.get('table tbody tr').each(($fila) => {
       // Ajusta el eq(4) si en tu tabla es otra columna
       cy.wrap($fila)
@@ -42,8 +52,7 @@ describe('Pruebas de Carga', () => {
         .then(($celda) => {
           // Limpiamos el texto (quitamos el % y espacios) y lo pasamos a número
           const valor = parseFloat($celda.text().replace('%', '').trim());
-
-          // 3. Aplicamos la lógica de aserción
+          // Aplicamos la lógica de aserción
           if (valor > 0) {
             // Si es mayor que cero, debe tener la clase verde de Bootstrap
             cy.wrap($celda).should('have.class', 'text-success');
@@ -57,12 +66,6 @@ describe('Pruebas de Carga', () => {
   });
 
   it('Comprobamos que junto al precio de cada criptomoneda salga el símbolo del dólar (ej. $50000)', () => {
-    cy.visit('http://localhost:4200');
-
-    // 1. Esperamos a que la tabla cargue filas
-    cy.get('table tbody tr').should('have.length.at.least', 1);
-
-    // 2. Iteramos por cada fila para revisar el precio
     cy.get('table tbody tr').each(($fila) => {
       // Asumimos que el Precio es la columna 4 (index 3)
       // Si tu tabla es: # | Logo | Nombre | Precio..., entonces es eq(3)
